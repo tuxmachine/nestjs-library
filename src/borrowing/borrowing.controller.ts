@@ -1,4 +1,7 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, Type } from '@nestjs/common';
+import { ContextIdFactory, ModuleRef } from '@nestjs/core';
+import { InjectDataSource } from '@nestjs/typeorm';
+import { DataSource } from 'typeorm';
 import { Admin } from '../auth/admin.decorator';
 import { ReqUser } from '../auth/user.decorator';
 import { User } from '../users/user.model';
@@ -8,21 +11,34 @@ import { ReturnBookDto } from './dto/return-book.dto';
 
 @Controller('borrow')
 export class BorrowingController {
-  constructor(private readonly borrowingService: BorrowingService) {}
+  constructor(
+    private readonly moduleRef: ModuleRef,
+    @InjectDataSource() private readonly dataSource: DataSource,
+  ) {}
 
   @Post()
-  borrowBook(@Body() { bookId }: BorrowBookDto, @ReqUser() user: User) {
-    return this.borrowingService.borrowBook(user.id, bookId);
+  async borrowBook(@Body() { bookId }: BorrowBookDto, @ReqUser() user: User) {
+    const borrowingService = await this.getDurableTree(BorrowingService);
+    return borrowingService.borrowBook(user.id, bookId);
   }
 
   @Post('return')
-  returnBook(@Body() { bookId }: ReturnBookDto, @ReqUser() user: User) {
-    return this.borrowingService.returnBook(user.id, bookId);
+  async returnBook(@Body() { bookId }: ReturnBookDto, @ReqUser() user: User) {
+    const borrowingService = await this.getDurableTree(BorrowingService);
+    return borrowingService.returnBook(user.id, bookId);
   }
 
   @Post('scan')
   @Admin()
-  scanOutstandingBooks() {
-    return this.borrowingService.scanOutstandingBooks();
+  async scanOutstandingBooks() {
+    const borrowingService = await this.getDurableTree(BorrowingService);
+    return borrowingService.scanOutstandingBooks();
+  }
+
+  private async getDurableTree<T>(provider: Type<T>): Promise<T> {
+    const contextId = ContextIdFactory.create();
+    const queryRunner = this.dataSource.createQueryRunner();
+    this.moduleRef.registerRequestByContextId({ queryRunner }, contextId);
+    return this.moduleRef.resolve(provider, contextId);
   }
 }
