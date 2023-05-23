@@ -5,24 +5,29 @@ import { User } from '../users/user.model';
 import { BorrowingService } from './borrowing.service';
 import { BorrowBookDto } from './dto/borrow-book.dto';
 import { ReturnBookDto } from './dto/return-book.dto';
+import { ScopedController } from '../scoped-typeorm/scoped-controller';
 
 @Controller('borrow')
-export class BorrowingController {
-  constructor(private readonly borrowingService: BorrowingService) {}
-
+export class BorrowingController extends ScopedController {
   @Post()
-  borrowBook(@Body() { bookId }: BorrowBookDto, @ReqUser() user: User) {
-    return this.borrowingService.borrowBook(user.id, bookId);
+  async borrowBook(@Body() { bookId }: BorrowBookDto, @ReqUser() user: User) {
+    return this.runInTransaction(async (resolver) =>
+      (await resolver(BorrowingService)).borrowBook(user.id, bookId),
+    );
   }
 
   @Post('return')
-  returnBook(@Body() { bookId }: ReturnBookDto, @ReqUser() user: User) {
-    return this.borrowingService.returnBook(user.id, bookId);
+  async returnBook(@Body() { bookId }: ReturnBookDto, @ReqUser() user: User) {
+    return this.runInTransaction(async (resolver) =>
+      (await resolver(BorrowingService)).returnBook(user.id, bookId),
+    );
   }
 
   @Post('scan')
   @Admin()
-  scanOutstandingBooks() {
-    return this.borrowingService.scanOutstandingBooks();
+  async scanOutstandingBooks() {
+    return this.runInTransaction(async (resolver) =>
+      (await resolver(BorrowingService)).scanOutstandingBooks(),
+    );
   }
 }
