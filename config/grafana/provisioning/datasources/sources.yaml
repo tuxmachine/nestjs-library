@@ -1,0 +1,11 @@
+# Configuration file version
+apiVersion: 1
+datasources:
+  - name: Prometheus
+    type: prometheus
+    uid: 'b1419ea6-1a2d-49aa-9025-d61769dffbc8'
+    url: http://prometheus:9090
+  - name: Jaeger
+    type: jaeger
+    uid: 'f7c1b69a-67a0-4084-a539-a1f2cbce76f5'
+    url: http://jaeger:16686

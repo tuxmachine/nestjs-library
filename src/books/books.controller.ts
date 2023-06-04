@@ -9,6 +9,9 @@ import {
   Put,
 } from '@nestjs/common';
 import { Admin } from '../auth/admin.decorator';
+import { ReqUser } from '../auth/user.decorator';
+import { UserRole } from '../users/user-role';
+import { User } from '../users/user.model';
 import { BooksService } from './books.service';
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
@@ -18,8 +21,8 @@ export class BooksController {
   constructor(private readonly booksService: BooksService) {}
 
   @Get()
-  getBooks() {
-    return this.booksService.getBooks();
+  getBooks(@ReqUser() user: User) {
+    return this.booksService.getBooks(user.role === UserRole.admin);
   }
 
   @Admin()
