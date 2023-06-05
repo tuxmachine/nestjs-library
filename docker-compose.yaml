@@ -1,0 +1,72 @@
+version: '3'
+
+services:
+  app:
+    build:
+      context: '.'
+    volumes:
+      - '.:/app'
+      - 'node_modules:/app/node_modules'
+    ports:
+      - '3000:3000'
+    environment:
+      OTEL_TRACES_EXPORTER: 'otlp'
+      OTEL_METRICS_EXPORTER: 'otlp'
+      OTEL_EXPORTER_OTLP_PROTOCOL: 'grpc'
+      OTEL_EXPORTER_OTLP_COMPRESSION: 'gzip'
+      OTEL_EXPORTER_OTLP_TRACES_ENDPOINT: 'http://otel-collector:4317'
+      OTEL_EXPORTER_OTLP_METRICS_ENDPOINT: 'http://otel-collector:4317'
+      OTEL_NODE_RESOURCE_DETECTORS: 'env,process,container'
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - '6379:6379'
+    container_name: redis
+
+  grafana:
+    image: grafana/grafana-oss:9.5.2
+    ports:
+      - '3030:3000'
+    volumes:
+      - './config/grafana:/etc/grafana'
+      - 'grafana:/var/lib/grafana'
+
+  prometheus:
+    image: bitnami/prometheus:2
+    ports:
+      - '9090:9090'
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yaml'
+    volumes:
+      - ./config/prometheus/:/etc/prometheus/
+
+  jaeger:
+    image: jaegertracing/all-in-one:1.45.0
+    ports:
+      - '16686:16686' # GUI
+      # - '14268:14268' # Collector
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
+      - LOG_LEVEL=debug
+
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib
+    command: [--config=/etc/otel-collector-config.yaml]
+    volumes:
+      - ./config/opentelemetry/otel-collector-config.yaml:/etc/otel-collector-config.yaml
+    depends_on:
+      - prometheus
+      - jaeger
+    ports:
+      # - 1888:1888 # pprof extension
+      - 8888:8888 # Prometheus metrics exposed by the collector
+      - 8889:8889 # Prometheus exporter metrics
+      # - 13133:13133 # health_check extension
+      # - 4317:4317 # OTLP gRPC receiver
+      # - 4318:4318 # OTLP http receiver
+      - 55679:55679 # zpages extension
+
+volumes:
+  node_modules:
+  grafana:
