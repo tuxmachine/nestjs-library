@@ -3,7 +3,7 @@ import { TransactionsService } from '../transactions/transactions.service';
 import { FindOptionsWhere, Repository } from 'typeorm';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserStatus } from './user-status';
-import { User } from './user.model';
+import { User } from './user.entity';
 
 export class UsersService {
   constructor(

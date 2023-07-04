@@ -5,13 +5,13 @@ import { subMonths } from 'date-fns';
 import * as request from 'supertest';
 import { Repository } from 'typeorm';
 import { AppModule } from '../../src/app.module';
-import { Book } from '../../src/books/book.model';
+import { Book } from '../../src/books/book.entity';
 import { BorrowingStatus } from '../../src/borrowing/borrowing-status';
-import { Borrowing } from '../../src/borrowing/borrowing.model';
+import { Borrowing } from '../../src/borrowing/borrowing.entity';
 import { DevService } from '../../src/dev/dev.service';
 import { UserRole } from '../../src/users/user-role';
 import { UserStatus } from '../../src/users/user-status';
-import { User } from '../../src/users/user.model';
+import { User } from '../../src/users/user.entity';
 
 describe('Scan outstanding book (e2e)', () => {
   let app: INestApplication;

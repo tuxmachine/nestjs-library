@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from '../auth/auth.module';
-import { Book } from '../books/book.model';
-import { Borrowing } from '../borrowing/borrowing.model';
-import { User } from '../users/user.model';
+import { Book } from '../books/book.entity';
+import { Borrowing } from '../borrowing/borrowing.entity';
+import { User } from '../users/user.entity';
 import { DevController } from './dev.controller';
 import { DevService } from './dev.service';
 

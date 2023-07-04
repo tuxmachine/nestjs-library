@@ -3,12 +3,12 @@ import { JwtService } from '@nestjs/jwt';
 import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
 import { addDays, subDays, subMonths } from 'date-fns';
 import { DataSource, Repository } from 'typeorm';
-import { Book } from '../books/book.model';
+import { Book } from '../books/book.entity';
 import { BorrowingStatus } from '../borrowing/borrowing-status';
-import { Borrowing } from '../borrowing/borrowing.model';
+import { Borrowing } from '../borrowing/borrowing.entity';
 import { UserRole } from '../users/user-role';
 import { UserStatus } from '../users/user-status';
-import { User } from '../users/user.model';
+import { User } from '../users/user.entity';
 
 @Injectable()
 export class DevService {

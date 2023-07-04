@@ -13,10 +13,10 @@ import {
 import { In, LessThan, Not, Repository } from 'typeorm';
 import { BooksService } from '../books/books.service';
 import { UserStatus } from '../users/user-status';
-import { User } from '../users/user.model';
+import { User } from '../users/user.entity';
 import { UsersService } from '../users/users.service';
 import { BorrowingStatus } from './borrowing-status';
-import { Borrowing } from './borrowing.model';
+import { Borrowing } from './borrowing.entity';
 
 @Injectable()
 export class BorrowingService {
