@@ -13,6 +13,10 @@ async function bootstrap() {
     }),
   );
 
+  // @Kamil, any tips on bootstrapping the metadata.ts file?
+  // Since it's a generated file, it makes sense to add to gitignore, but
+  // running `pnpm run swagger` without this file throws a error:
+  // >> Cannot find module './metadata' or its corresponding type declarations
   await SwaggerModule.loadPluginMetadata((await import('./metadata')).default);
   const config = new DocumentBuilder()
     .setTitle('Cats example')

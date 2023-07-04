@@ -1,7 +1,9 @@
-const tsconfig = require('./tsconfig.json').compilerOptions;
+// @Kamil swcDefaultConfig expects tsOptions input
+// I expect this needs an update to the example code in docs
+const tsOptions = require('./tsconfig.json').compilerOptions;
 const swcDefaultConfig =
   require('@nestjs/cli/lib/compiler/defaults/swc-defaults').swcDefaultsFactory(
-    tsconfig,
+    tsOptions,
   ).swcOptions;
 
 module.exports = {

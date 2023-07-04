@@ -169,6 +169,10 @@ export default async () => {
                 type: () => ({
                   shirtColor: {
                     required: true,
+                    // @Kamil this generated path is incorrect
+                    // Can't resolve '../../../../../libs/shared/src/some-enum' in '/home/rick/Code/Trilon/nestjs/example-app/apps/library/src'
+                    // Attaching the debugger I could trace the first occurance of the incorrect path to
+                    // https://github.com/nestjs/swagger/blob/43a244b5b83dbea01a8274a65d7703c448f77116/lib/plugin/visitors/model-class.visitor.ts#L488
                     enum: require('../../../../../libs/shared/src/some-enum')
                       .Colors,
                     isArray: true,
@@ -220,4 +224,3 @@ export default async () => {
     },
   };
 };
-
