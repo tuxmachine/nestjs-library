@@ -6,6 +6,7 @@
   "collection": "@nestjs/schematics",
   "compilerOptions": {
     "builder": "webpack",
+    "deleteOutDir": true,
     "plugins": ["@nestjs/swagger"]
   },
   "projects": {
