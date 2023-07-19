@@ -1,17 +1,9 @@
-import {
-  IsEmail,
-  IsEnum,
-  IsInt,
-  IsOptional,
-  IsPositive,
-} from 'class-validator';
+import { IsEmail, IsEnum, IsOptional } from 'class-validator';
 import { UserStatus } from '../user-status';
+import { BaseUser } from './base-user.dto';
+import { PickType } from '@nestjs/swagger';
 
-export class UpdateUserDto {
-  @IsInt()
-  @IsPositive()
-  id: number;
-
+export class UpdateUserDto extends PickType(BaseUser, ['id']) {
   @IsOptional()
   @IsEmail()
   email?: string;
