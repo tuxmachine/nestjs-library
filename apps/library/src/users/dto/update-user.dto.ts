@@ -1,22 +1,9 @@
-import {
-  IsEmail,
-  IsEnum,
-  IsInt,
-  IsOptional,
-  IsPositive,
-} from 'class-validator';
-import { UserStatus } from '../user-status';
+import { IsInt, IsPositive } from 'class-validator';
+import { BaseUser } from './base-user.dto';
+import { OmitType, PartialType } from '@nestjs/swagger';
 
-export class UpdateUserDto {
+export class UpdateUserDto extends PartialType(OmitType(BaseUser, ['id'])) {
   @IsInt()
   @IsPositive()
   id: number;
-
-  @IsOptional()
-  @IsEmail()
-  email?: string;
-
-  @IsEnum(UserStatus)
-  @IsOptional()
-  status?: UserStatus;
 }

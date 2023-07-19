@@ -149,16 +149,6 @@
           "id": {
             "type": "number",
             "minimum": 1
-          },
-          "email": {
-            "type": "string"
-          },
-          "status": {
-            "type": "string",
-            "enum": [
-              "active",
-              "suspended"
-            ]
           }
         },
         "required": [
@@ -168,18 +158,18 @@
       "CreditUserDto": {
         "type": "object",
         "properties": {
-          "id": {
+          "amount": {
             "type": "number",
             "minimum": 1
           },
-          "amount": {
+          "id": {
             "type": "number",
             "minimum": 1
           }
         },
         "required": [
-          "id",
-          "amount"
+          "amount",
+          "id"
         ]
       }
     }
