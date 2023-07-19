@@ -1,5 +1,23 @@
 {
   "$schema": "https://json.schemastore.org/nest-cli",
+  "monorepo": true,
+  "root": "apps/library",
+  "sourceRoot": "apps/library/src",
   "collection": "@nestjs/schematics",
-  "sourceRoot": "src"
+  "compilerOptions": {
+    "builder": "webpack",
+    "deleteOutDir": true,
+    "plugins": ["@nestjs/swagger"]
+  },
+  "projects": {
+    "library": {
+      "type": "application",
+      "root": "apps/library",
+      "entryFile": "main",
+      "sourceRoot": "apps/library/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/library/tsconfig.json"
+      }
+    }
+  }
 }

@@ -1,11 +1,12 @@
-import { Book } from '../books/book.model';
-import { User } from '../users/user.model';
+import { Book } from '../books/book.entity';
+import { User } from '../users/user.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
   ManyToOne,
   PrimaryGeneratedColumn,
+  Relation,
   UpdateDateColumn,
 } from 'typeorm';
 import { BorrowingStatus } from './borrowing-status';
@@ -30,14 +31,14 @@ export class Borrowing {
   @Column({ type: 'datetime', nullable: true })
   returnDate?: Date;
 
-  @Column({ enum: BorrowingStatus, default: BorrowingStatus.active })
+  @Column({ type: 'varchar', default: BorrowingStatus.active })
   status: BorrowingStatus;
 
   @ManyToOne(() => Book, (book) => book.borrowings)
-  book?: Book;
+  book?: Relation<Book>;
 
   @ManyToOne(() => User, (user) => user.borrowings)
-  user?: User;
+  user?: Relation<User>;
 
   @UpdateDateColumn()
   updatedAt: Date;

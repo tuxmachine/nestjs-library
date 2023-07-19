@@ -1,7 +1,7 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { Admin } from '../auth/admin.decorator';
 import { ReqUser } from '../auth/user.decorator';
-import { User } from '../users/user.model';
+import { User } from '../users/user.entity';
 import { BorrowingService } from './borrowing.service';
 import { BorrowBookDto } from './dto/borrow-book.dto';
 import { ReturnBookDto } from './dto/return-book.dto';
