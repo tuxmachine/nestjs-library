@@ -1,22 +1,23 @@
-import { Borrowing } from '../borrowing/borrowing.model';
+import { Borrowing } from '../borrowing/borrowing.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
   OneToMany,
   PrimaryGeneratedColumn,
+  Relation,
   UpdateDateColumn,
 } from 'typeorm';
 import { UserStatus } from './user-status';
 import { UserRole } from './user-role';
-import { Transaction } from '../transactions/transaction.model';
+import { Transaction } from '../transactions/transaction.entity';
 
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ enum: UserRole, default: UserRole.user })
+  @Column({ type: 'varchar', default: UserRole.user })
   role: UserRole;
 
   @Column({ unique: true })
@@ -30,14 +31,14 @@ export class User {
   // Store financials in smallest denominator (cents)
   credit: number;
 
-  @Column({ enum: UserStatus, default: UserStatus.active })
+  @Column({ type: 'varchar', default: UserStatus.active })
   status: UserStatus;
 
   @OneToMany(() => Borrowing, (borrowing) => borrowing.user)
-  borrowings?: Borrowing[];
+  borrowings?: Relation<Borrowing>[];
 
   @OneToMany(() => Transaction, (transaction) => transaction.user)
-  transactions?: Transaction[];
+  transactions?: Relation<Transaction>[];
 
   @CreateDateColumn()
   createdAt: Date;

@@ -4,8 +4,9 @@ import {
   Entity,
   ManyToOne,
   PrimaryGeneratedColumn,
+  Relation,
 } from 'typeorm';
-import { User } from '../users/user.model';
+import { User } from '../users/user.entity';
 
 @Entity()
 export class Transaction {
@@ -22,7 +23,7 @@ export class Transaction {
   reference: string;
 
   @ManyToOne(() => User, (user) => user.transactions)
-  user?: User;
+  user?: Relation<User>;
 
   @CreateDateColumn()
   createdAt: Date;

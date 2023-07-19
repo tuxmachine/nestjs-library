@@ -1,6 +1,6 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Transaction } from './transaction.model';
+import { Transaction } from './transaction.entity';
 
 export class TransactionsService {
   constructor(

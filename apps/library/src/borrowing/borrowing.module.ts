@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Book } from '../books/book.model';
+import { Book } from '../books/book.entity';
 import { BooksModule } from '../books/books.module';
-import { User } from '../users/user.model';
+import { User } from '../users/user.entity';
 import { UsersModule } from '../users/users.module';
 import { BorrowingController } from './borrowing.controller';
-import { Borrowing } from './borrowing.model';
+import { Borrowing } from './borrowing.entity';
 import { BorrowingService } from './borrowing.service';
 
 @Module({
