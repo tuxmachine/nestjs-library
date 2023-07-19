@@ -1,5 +1,11 @@
-import { Borrowing } from '../borrowing/borrowing.model';
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Borrowing } from '../borrowing/borrowing.entity';
+import {
+  Column,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  Relation,
+} from 'typeorm';
 
 @Entity()
 export class Book {
@@ -19,5 +25,5 @@ export class Book {
   amount: number;
 
   @OneToMany(() => Borrowing, (borrowing) => borrowing.book)
-  borrowings?: Borrowing[];
+  borrowings?: Relation<Borrowing>[];
 }

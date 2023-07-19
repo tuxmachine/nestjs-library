@@ -3,7 +3,7 @@ import { Admin } from '../auth/admin.decorator';
 import { ReqUser } from '../auth/user.decorator';
 import { CreditUserDto } from './dto/credit-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { User } from './user.model';
+import { User } from './user.entity';
 import { UsersService } from './users.service';
 
 @Controller('users')
