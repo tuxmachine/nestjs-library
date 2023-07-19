@@ -483,6 +483,9 @@
       "UpdateUserDto": {
         "type": "object",
         "properties": {
+          "id": {
+            "type": "number"
+          },
           "email": {
             "type": "string"
           },
@@ -493,7 +496,10 @@
               "suspended"
             ]
           }
-        }
+        },
+        "required": [
+          "id"
+        ]
       },
       "CreditUserDto": {
         "type": "object",
