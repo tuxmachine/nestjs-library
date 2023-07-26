@@ -8,6 +8,7 @@ import { BorrowingController } from './borrowing.controller';
 import { Borrowing } from './borrowing.model';
 import { BorrowingService } from './borrowing.service';
 import { Transaction } from '../transactions/transaction.model';
+import { TestService } from './test.service';
 
 @Module({
   imports: [
@@ -16,6 +17,6 @@ import { Transaction } from '../transactions/transaction.model';
     BooksModule,
   ],
   controllers: [BorrowingController],
-  providers: [BorrowingService],
+  providers: [BorrowingService, TestService],
 })
 export class BorrowingModule {}

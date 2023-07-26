@@ -2,6 +2,7 @@ import { Inject, Type } from '@nestjs/common';
 import { ContextIdFactory, ModuleRef } from '@nestjs/core';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
+import { transactionStorage } from './transaction-store';
 
 export type Resolver = <T>(token: Type<T> | string | symbol) => Promise<T>;
 
@@ -12,14 +13,26 @@ export abstract class ScopedController {
   @InjectDataSource()
   protected readonly dataSource: DataSource;
 
+  /**
+   * Construct a DI subtree with transaction scoped TypeORM repositories
+   */
   protected async runInTransaction<R>(
     fn: (resolve: Resolver) => Promise<R>,
   ): Promise<R> {
+    const store = transactionStorage.getStore();
     const contextId = ContextIdFactory.create();
     const queryRunner = this.dataSource.createQueryRunner();
-    this.moduleRef.registerRequestByContextId({ queryRunner }, contextId);
+
     const resolver: Resolver = (token) =>
       this.moduleRef.resolve(token, contextId);
+
+    // Make queryRunner available to our ScopedTypeOrmModule
+    // to construct the transaction-scoped repositories
+    store.queryRunner = queryRunner;
+
+    // Make the REQUEST available to our DI subtree
+    this.moduleRef.registerRequestByContextId(store.request, contextId);
+
     await queryRunner.startTransaction();
     let result: R;
     try {
