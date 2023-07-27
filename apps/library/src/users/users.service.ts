@@ -1,5 +1,4 @@
 import { InjectRepository } from '@nestjs/typeorm';
-import { TransactionsService } from '../transactions/transactions.service';
 import { FindOptionsWhere, Repository } from 'typeorm';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserStatus } from './user-status';
@@ -9,7 +8,6 @@ export class UsersService {
   constructor(
     @InjectRepository(User)
     private readonly usersRepo: Repository<User>,
-    private readonly transactionsService: TransactionsService,
   ) {}
 
   getUsers(where?: FindOptionsWhere<User>) {
@@ -29,21 +27,11 @@ export class UsersService {
     return user.credit > 0 && user.status === UserStatus.active;
   }
 
-  async addCredit(userId: number, amount: number, reference = 'add credit') {
-    await this.transactionsService.createTransaction({
-      userId,
-      amount,
-      reference,
-    });
+  async addCredit(userId: number, amount: number) {
     return this.usersRepo.increment({ id: userId }, 'credit', amount);
   }
 
-  async chargeFees(userId: number, amount: number, reference = 'charge fees') {
-    await this.transactionsService.createTransaction({
-      userId,
-      amount,
-      reference,
-    });
+  async chargeFees(userId: number, amount: number) {
     const user = await this.usersRepo.findOneByOrFail({ id: userId });
     user.credit -= amount;
     return this.usersRepo.save(user);

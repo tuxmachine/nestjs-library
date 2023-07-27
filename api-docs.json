@@ -1,24 +1,6 @@
 {
   "openapi": "3.0.0",
   "paths": {
-    "/users/self": {
-      "get": {
-        "operationId": "UsersController_getSelf",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/User"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/users": {
       "get": {
         "operationId": "UsersController_getUsers",
@@ -85,198 +67,9 @@
         }
       }
     },
-    "/books": {
-      "get": {
-        "operationId": "BooksController_getBooks",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Book"
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "operationId": "BooksController_createBook",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateBookDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put": {
-        "operationId": "BooksController_updateBook",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateBookDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Book"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/books/{id}": {
-      "delete": {
-        "operationId": "BooksController_deleteBook",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "number"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Book"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/borrow": {
-      "post": {
-        "operationId": "BorrowingController_borrowBook",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/BorrowBookDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Borrowing"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/borrow/return": {
-      "post": {
-        "operationId": "BorrowingController_returnBook",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ReturnBookDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Borrowing"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/borrow/scan": {
-      "post": {
-        "operationId": "BorrowingController_scanOutstandingBooks",
-        "parameters": [],
-        "responses": {
-          "201": {
-            "description": ""
-          }
-        }
-      }
-    },
-    "/dev/reset": {
-      "post": {
-        "operationId": "DevController_reset",
-        "parameters": [],
-        "responses": {
-          "201": {
-            "description": ""
-          }
-        }
-      }
-    },
     "/dev/seed": {
       "post": {
         "operationId": "DevController_seed",
-        "parameters": [],
-        "responses": {
-          "201": {
-            "description": ""
-          }
-        }
-      }
-    },
-    "/dev/token": {
-      "post": {
-        "operationId": "DevController_login",
         "parameters": [],
         "responses": {
           "201": {
@@ -301,70 +94,6 @@
   "servers": [],
   "components": {
     "schemas": {
-      "Book": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "number"
-          },
-          "title": {
-            "type": "string"
-          },
-          "author": {
-            "type": "string"
-          },
-          "isbn": {
-            "type": "string"
-          },
-          "amount": {
-            "type": "number"
-          },
-          "borrowings": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Borrowing"
-            }
-          }
-        },
-        "required": [
-          "id",
-          "title",
-          "author",
-          "isbn",
-          "amount"
-        ]
-      },
-      "Transaction": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "number"
-          },
-          "amount": {
-            "type": "number"
-          },
-          "userId": {
-            "type": "number"
-          },
-          "reference": {
-            "type": "string"
-          },
-          "user": {
-            "$ref": "#/components/schemas/User"
-          },
-          "createdAt": {
-            "format": "date-time",
-            "type": "string"
-          }
-        },
-        "required": [
-          "id",
-          "amount",
-          "userId",
-          "reference",
-          "createdAt"
-        ]
-      },
       "User": {
         "type": "object",
         "properties": {
@@ -394,18 +123,6 @@
             ],
             "type": "string"
           },
-          "borrowings": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Borrowing"
-            }
-          },
-          "transactions": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Transaction"
-            }
-          },
           "createdAt": {
             "format": "date-time",
             "type": "string"
@@ -423,60 +140,6 @@
           "credit",
           "status",
           "createdAt",
-          "updatedAt"
-        ]
-      },
-      "Borrowing": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "number"
-          },
-          "bookId": {
-            "type": "number"
-          },
-          "userId": {
-            "type": "number"
-          },
-          "borrowingDate": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "dueDate": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "returnDate": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "status": {
-            "enum": [
-              "active",
-              "returned",
-              "overdue",
-              "lost"
-            ],
-            "type": "string"
-          },
-          "book": {
-            "$ref": "#/components/schemas/Book"
-          },
-          "user": {
-            "$ref": "#/components/schemas/User"
-          },
-          "updatedAt": {
-            "format": "date-time",
-            "type": "string"
-          }
-        },
-        "required": [
-          "id",
-          "bookId",
-          "userId",
-          "borrowingDate",
-          "dueDate",
-          "status",
           "updatedAt"
         ]
       },
@@ -517,67 +180,6 @@
         "required": [
           "id",
           "amount"
-        ]
-      },
-      "CreateBookDto": {
-        "type": "object",
-        "properties": {
-          "title": {
-            "type": "string"
-          },
-          "author": {
-            "type": "string"
-          },
-          "isbn": {
-            "type": "string"
-          },
-          "amount": {
-            "type": "number",
-            "maximum": 100,
-            "minimum": 1
-          }
-        },
-        "required": [
-          "title",
-          "author",
-          "isbn",
-          "amount"
-        ]
-      },
-      "UpdateBookDto": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "number",
-            "minimum": 1
-          }
-        },
-        "required": [
-          "id"
-        ]
-      },
-      "BorrowBookDto": {
-        "type": "object",
-        "properties": {
-          "bookId": {
-            "type": "number",
-            "minimum": 1
-          }
-        },
-        "required": [
-          "bookId"
-        ]
-      },
-      "ReturnBookDto": {
-        "type": "object",
-        "properties": {
-          "bookId": {
-            "type": "number",
-            "minimum": 1
-          }
-        },
-        "required": [
-          "bookId"
         ]
       }
     }

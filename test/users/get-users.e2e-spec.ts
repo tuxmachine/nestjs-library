@@ -1,12 +1,11 @@
 import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import * as request from 'supertest';
-import { AppModule } from '../../src/app.module';
-import { DevService } from '../../src/dev/dev.service';
+import { AppModule } from '../../apps/library/src/app.module';
+import { DevService } from '../../apps/library/src/dev/dev.service';
 
 describe('Get users (e2e)', () => {
   let app: INestApplication;
-  let token: string;
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -18,13 +17,11 @@ describe('Get users (e2e)', () => {
     const devService: DevService = app.get(DevService);
     await devService.truncate();
     await devService.seed();
-    token = (await devService.login({ id: 1 })).token;
   });
 
   it('returns all users', () => {
     return request(app.getHttpServer())
       .get('/users')
-      .set('Authorization', `Bearer ${token}`)
       .expect(200)
       .expect((res) => {
         expect(res.body.length).toEqual(5);

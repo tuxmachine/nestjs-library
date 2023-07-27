@@ -1,16 +1,12 @@
-import { Borrowing } from '../borrowing/borrowing.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
-  OneToMany,
   PrimaryGeneratedColumn,
-  Relation,
   UpdateDateColumn,
 } from 'typeorm';
 import { UserStatus } from './user-status';
 import { UserRole } from './user-role';
-import { Transaction } from '../transactions/transaction.entity';
 
 @Entity()
 export class User {
@@ -33,12 +29,6 @@ export class User {
 
   @Column({ type: 'varchar', default: UserStatus.active })
   status: UserStatus;
-
-  @OneToMany(() => Borrowing, (borrowing) => borrowing.user)
-  borrowings?: Relation<Borrowing>[];
-
-  @OneToMany(() => Transaction, (transaction) => transaction.user)
-  transactions?: Relation<Transaction>[];
 
   @CreateDateColumn()
   createdAt: Date;
