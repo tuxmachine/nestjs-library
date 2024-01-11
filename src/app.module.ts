@@ -5,6 +5,7 @@ import { BooksModule } from './books/books.module';
 import { BorrowingModule } from './borrowing/borrowing.module';
 import { DevModule } from './dev/dev.module';
 import { UsersModule } from './users/users.module';
+import { ScopedTypeOrmModule } from './scoped-typeorm/scoped-typeorm.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { UsersModule } from './users/users.module';
       // Automatically create tables, great for development but very dangerous for production
       synchronize: true,
     }),
+    ScopedTypeOrmModule.forRoot(),
     AuthModule,
     BooksModule,
     BorrowingModule,

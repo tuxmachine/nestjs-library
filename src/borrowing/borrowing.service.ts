@@ -60,12 +60,6 @@ export class BorrowingService {
     const borrowing = await this.borrowingRepo.findOneOrFail({
       where: { userId, bookId },
     });
-    if (borrowing.status === BorrowingStatus.lost) {
-      throw new BadRequestException('Book is already written off');
-    }
-    if (borrowing.status === BorrowingStatus.returned) {
-      throw new BadRequestException('Book is already returned');
-    }
     const today = new Date();
     const returnDateDiff = differenceInDays(today, borrowing.dueDate);
     if (returnDateDiff < 0) {
@@ -83,6 +77,13 @@ export class BorrowingService {
         lateFee,
         `late fee for book ${borrowing.id}`,
       );
+    }
+    // without transactions, this would generate inconsistent user.credit 💣️
+    if (borrowing.status === BorrowingStatus.lost) {
+      throw new BadRequestException('Book is already written off');
+    }
+    if (borrowing.status === BorrowingStatus.returned) {
+      throw new BadRequestException('Book is already returned');
     }
     borrowing.status = BorrowingStatus.returned;
     borrowing.returnDate = today;

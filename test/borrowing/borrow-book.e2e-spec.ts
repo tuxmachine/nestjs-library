@@ -20,7 +20,7 @@ describe('Borrow book (e2e)', () => {
 
     app = moduleFixture.createNestApplication();
     await app.init();
-    usersService = app.get(UsersService);
+    usersService = await app.resolve(UsersService);
     const devService: DevService = app.get(DevService);
     await devService.truncate();
     await devService.seed();

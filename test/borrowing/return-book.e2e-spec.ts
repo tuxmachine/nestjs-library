@@ -19,7 +19,7 @@ describe('Return book (e2e)', () => {
 
     app = moduleFixture.createNestApplication();
     await app.init();
-    usersService = app.get(UsersService);
+    usersService = await app.resolve(UsersService);
     const devService: DevService = app.get(DevService);
     await devService.truncate();
     await devService.seed();
@@ -55,6 +55,7 @@ describe('Return book (e2e)', () => {
   });
 
   it('a user cannot return a book after it was marked lost', async () => {
+    const userBefore = await usersService.getUser(4);
     const response = await request(app.getHttpServer())
       .post('/borrow/return')
       .send({
@@ -62,5 +63,7 @@ describe('Return book (e2e)', () => {
       })
       .set('Authorization', `Bearer ${suspendedUserToken}`);
     expect(response.status).toEqual(400);
+    const userAfter = await usersService.getUser(4);
+    expect(userBefore.credit).toEqual(userAfter.credit);
   });
 });
