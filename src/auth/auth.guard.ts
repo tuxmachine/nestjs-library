@@ -1,8 +1,10 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { UserRole } from '../users/user-role';
-import { UsersService } from '../users/users.service';
+import { User } from '../users/user.model';
 import { IS_ADMIN } from './admin.decorator';
 import { IS_PUBLIC } from './public.decorator';
 
@@ -11,7 +13,8 @@ export class AuthGuard implements CanActivate {
   constructor(
     private readonly reflector: Reflector,
     private readonly jwtService: JwtService,
-    private readonly usersService: UsersService,
+    @InjectRepository(User)
+    private readonly userRepo: Repository<User>,
   ) {}
 
   async canActivate(context: ExecutionContext) {
@@ -36,7 +39,9 @@ export class AuthGuard implements CanActivate {
     }
 
     const payload = await this.jwtService.verifyAsync(token);
-    request.user = await this.usersService.getUserByExternalId(payload.sub);
+    request.user = await this.userRepo.findOneByOrFail({
+      externalId: payload.sub,
+    });
 
     if (request.user) {
       if (requiresAdmin && request.user.role !== UserRole.admin) {

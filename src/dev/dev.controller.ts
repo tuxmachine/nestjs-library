@@ -7,13 +7,9 @@ import { DevService } from './dev.service';
 export class DevController {
   constructor(private readonly devService: DevService) {}
 
-  @Post('reset')
-  reset() {
-    return this.devService.truncate();
-  }
-
   @Post('seed')
-  seed() {
+  async seed() {
+    await this.devService.truncate();
     return this.devService.seed();
   }
 
