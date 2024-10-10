@@ -1,0 +1,22 @@
+meta {
+  name: Borrow book
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:3001/borrow
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{jwt}}
+}
+
+body:json {
+  {
+    "userId": "{{userId}}",
+    "bookId": 3
+  }
+}
